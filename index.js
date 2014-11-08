@@ -3,11 +3,11 @@ var namedParam    = /(\(\?)?:\w+/g;
 var splatParam    = /\*\w+/g;
 var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 
-module.exports = function(urlHandler) {
-    var routeHandlers = [];
+module.exports = function(history) {
+    var handlers = [];
 
     function goTo(url) {
-        routeHandlers.some(function(handler) {
+        handlers.some(function(handler) {
             if (handler.route.test(url)) {
                 handler.callback(url);
                 return true;
@@ -20,16 +20,16 @@ module.exports = function(urlHandler) {
             if (!isRegExp(route)) {
                 route = routeToRegExp(route);
             }
-            routeHandlers.push({
+            handlers.push({
                 route: route,
                 callback: callWithParams(route, cb)
             });
         },
         start: function() {
-            urlHandler.on('change', goTo);
+            history.on('change', goTo);
         },
         stop: function() {
-            urlHandler.removeListener('change', goTo);
+            history.removeListener('change', goTo);
         }
     };
 };

@@ -2,8 +2,8 @@ var test = require('tape');
 var routine = require('./');
 var EventEmitter = require('events').EventEmitter;
 
-var urlHandler = new EventEmitter();
-var routes = routine(urlHandler);
+var history = new EventEmitter();
+var routes = routine(history);
 routes.start();
 
 test('empty route', function(t) {
@@ -13,7 +13,7 @@ test('empty route', function(t) {
         t.pass();
     });
 
-    urlHandler.emit("change", "");
+    history.emit("change", "");
 });
 
 test('simple route', function(t) {
@@ -23,8 +23,8 @@ test('simple route', function(t) {
         t.pass();
     });
 
-    urlHandler.emit("change", "counter");
-    urlHandler.emit("change", "counter");
+    history.emit("change", "counter");
+    history.emit("change", "counter");
 });
 
 test('only call first handler for matching route', function(t) {
@@ -37,7 +37,7 @@ test('only call first handler for matching route', function(t) {
         t.fail();
     });
 
-    urlHandler.emit("change", "route");
+    history.emit("change", "route");
 });
 
 test('simple route with slash', function(t) {
@@ -50,7 +50,7 @@ test('simple route with slash', function(t) {
         t.fail();
     });
 
-    urlHandler.emit("change", "/slash");
+    history.emit("change", "/slash");
 });
 
 test('simple query', function(t) {
@@ -60,7 +60,7 @@ test('simple query', function(t) {
         t.equal(query, "test");
     });
 
-    urlHandler.emit("change", "search/test");
+    history.emit("change", "search/test");
 });
 
 test('simple query with unicode', function(t) {
@@ -70,7 +70,7 @@ test('simple query with unicode', function(t) {
         t.equal(query, "тест");
     });
 
-    urlHandler.emit("change", "new-search/тест");
+    history.emit("change", "new-search/тест");
 });
 
 test('route with two parts', function(t) {
@@ -81,7 +81,7 @@ test('route with two parts', function(t) {
         t.equal(page, "19");
     });
 
-    urlHandler.emit("change", "search/oslo/p19");
+    history.emit("change", "search/oslo/p19");
 });
 
 test('route precedens', function(t) {
@@ -97,9 +97,9 @@ test('route precedens', function(t) {
         t.equal(id, 'foo');
     }));
 
-    urlHandler.emit("change", "contacts");
-    urlHandler.emit("change", "contacts/new");
-    urlHandler.emit("change", "contacts/foo");
+    history.emit("change", "contacts");
+    history.emit("change", "contacts/new");
+    history.emit("change", "contacts/foo");
 });
 
 test("route with splat", function(t) {
@@ -109,7 +109,7 @@ test("route with splat", function(t) {
         t.equal(args, "long-list/of/splatted_99args");
     });
 
-    urlHandler.emit("change", "splat/long-list/of/splatted_99args/end");
+    history.emit("change", "splat/long-list/of/splatted_99args/end");
 });
 
 test("github style route", function(t) {
@@ -121,7 +121,7 @@ test("github style route", function(t) {
         t.equal(to, "kjbekkelund:with/slash");
     });
 
-    urlHandler.emit("change", "kjbekkelund/compare/1.0...kjbekkelund:with/slash");
+    history.emit("change", "kjbekkelund/compare/1.0...kjbekkelund:with/slash");
 });
 
 test("route with optional part", function(t) {
@@ -134,8 +134,8 @@ test("route with optional part", function(t) {
         t.equal(arg, "kim");
     });
 
-    urlHandler.emit("change", "optional1");
-    urlHandler.emit("change", "optional2/kim");
+    history.emit("change", "optional1");
+    history.emit("change", "optional2/kim");
 });
 
 test('complex route', function(t) {
@@ -147,7 +147,7 @@ test('complex route', function(t) {
         t.equal(rest, "four/five/six/seven");
     });
 
-    urlHandler.emit("change", "one/two/three/complex-part/four/five/six/seven");
+    history.emit("change", "one/two/three/complex-part/four/five/six/seven");
 });
 
 test('route with query', function(t) {
@@ -158,7 +158,7 @@ test('route with query', function(t) {
         t.equal(queryParams, "a=b&c=d");
     });
 
-    urlHandler.emit("change", "query/mandel?a=b&c=d");
+    history.emit("change", "query/mandel?a=b&c=d");
 });
 
 test('route with utf8', function(t) {
@@ -171,8 +171,8 @@ test('route with utf8', function(t) {
         t.pass();
     }));
 
-    urlHandler.emit("change", "charñ");
-    urlHandler.emit("change", "char%C3%B1");
+    history.emit("change", "charñ");
+    history.emit("change", "char%C3%B1");
 });
 
 test('decode named parameters, not splats', function(t) {
@@ -183,7 +183,7 @@ test('decode named parameters, not splats', function(t) {
         t.equal(splat, "c/d/e");
     });
 
-    urlHandler.emit("change", "decode/a%2Fb/c%2Fd/e");
+    history.emit("change", "decode/a%2Fb/c%2Fd/e");
 });
 
 test('regexp route', function(t) {
@@ -193,39 +193,39 @@ test('regexp route', function(t) {
         t.pass();
     });
 
-    urlHandler.emit("change", "ends/with/regexp");
+    history.emit("change", "ends/with/regexp");
 });
 
 test('route anything', function(t) {
     t.plan(1);
 
-    var urlHandler = new EventEmitter();
-    var routes = routine(urlHandler);
+    var history = new EventEmitter();
+    var routes = routine(history);
     routes.start();
 
     routes.on("*anything", function(arg) {
         t.equal(arg, "doesnt-match-a-route");
     });
 
-    urlHandler.emit("change", "doesnt-match-a-route");
+    history.emit("change", "doesnt-match-a-route");
 });
 
 test('can stop routing', function(t) {
     t.plan(1);
 
-    var urlHandler = new EventEmitter();
-    var routes = routine(urlHandler);
+    var history = new EventEmitter();
+    var routes = routine(history);
     routes.start();
 
     routes.on("stop", function() {
         t.pass();
     });
 
-    urlHandler.emit("change", "stop");
+    history.emit("change", "stop");
 
     routes.stop();
 
-    urlHandler.emit("change", "stop");
+    history.emit("change", "stop");
 });
 
 function once(fn) {
