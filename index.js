@@ -17,10 +17,12 @@ module.exports = function(urlHandler) {
 
     return {
         on: function(route, cb) {
-            var r = routeToRegExp(route);
+            if (!isRegExp(route)) {
+                route = routeToRegExp(route);
+            }
             routeHandlers.push({
-                route: r,
-                callback: callWithParams(r, cb)
+                route: route,
+                callback: callWithParams(route, cb)
             });
         },
         start: function() {
@@ -31,6 +33,10 @@ module.exports = function(urlHandler) {
         }
     };
 };
+
+function isRegExp(obj) {
+    return obj instanceof RegExp;
+}
 
 function callWithParams(route, cb) {
     return function(url) {

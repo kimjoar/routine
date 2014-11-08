@@ -161,6 +161,30 @@ test('decode named parameters, not splats', function(t) {
     urlHandler.emit("change", "decode/a%2Fb/c%2Fd/e");
 });
 
+test('regexp route', function(t) {
+    t.plan(1);
+
+    routes.on(/regexp$/, function() {
+        t.pass();
+    });
+
+    urlHandler.emit("change", "ends/with/regexp");
+});
+
+test('route anything', function(t) {
+    t.plan(1);
+
+    var urlHandler = new EventEmitter();
+    var routes = routine(urlHandler);
+    routes.start();
+
+    routes.on("*anything", function(arg) {
+        t.equal(arg, "doesnt-match-a-route");
+    });
+
+    urlHandler.emit("change", "doesnt-match-a-route");
+});
+
 test('can stop routing', function(t) {
     t.plan(1);
 
@@ -177,16 +201,6 @@ test('can stop routing', function(t) {
     routes.stop();
 
     urlHandler.emit("change", "stop");
-});
-
-test('route anything', function(t) {
-    t.plan(1);
-
-    routes.on("*anything", function(arg) {
-        t.equal(arg, "doesnt-match-a-route");
-    });
-
-    urlHandler.emit("change", "doesnt-match-a-route");
 });
 
 function once(fn) {
