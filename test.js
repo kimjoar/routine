@@ -28,6 +28,19 @@ test('simple route', function(t) {
     urlHandler.emit("change", "counter");
 });
 
+test('simple route with slash', function(t) {
+    t.plan(1);
+
+    routes.on("/slash", function() {
+        t.pass();
+    });
+    routes.on("slash", function() {
+        t.fail();
+    });
+
+    urlHandler.emit("change", "/slash");
+});
+
 test('simple query', function(t) {
     t.plan(1);
 
