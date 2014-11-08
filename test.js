@@ -17,7 +17,7 @@ test('empty route', function(t) {
 });
 
 test('simple route', function(t) {
-    t.plan(3);
+    t.plan(2);
 
     routes.on("counter", function() {
         t.pass();
@@ -25,7 +25,19 @@ test('simple route', function(t) {
 
     urlHandler.emit("change", "counter");
     urlHandler.emit("change", "counter");
-    urlHandler.emit("change", "counter");
+});
+
+test('only call first handler for matching route', function(t) {
+    t.plan(1);
+
+    routes.on("route", function() {
+        t.pass();
+    });
+    routes.on("route", function() {
+        t.fail();
+    });
+
+    urlHandler.emit("change", "route");
 });
 
 test('simple route with slash', function(t) {
