@@ -1,0 +1,19 @@
+{
+  "name": "routine",
+  "version": "0.1.0",
+  "description": "A simple router",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "browserify": "^6.2.0",
+    "derequire": "^1.2.0",
+    "phantomjs": "^1.9.10",
+    "tape": "^3.0.2"
+  },
+  "scripts": {
+    "test": "testem ci",
+    "build": "browserify index.js --standalone routine | derequire > dist/routine.js"
+  },
+  "author": "Kim Joar Bekkelund <kjbekkelund@gmail.com>",
+  "license": "MIT"
+}
