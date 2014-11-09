@@ -8,7 +8,8 @@
     "browserify": "^6.2.0",
     "derequire": "^1.2.0",
     "phantomjs": "^1.9.10",
-    "tape": "^3.0.2"
+    "tape": "^3.0.2",
+    "uglify-js": "^2.4.15"
   },
   "repository": {
     "type": "git",
@@ -16,7 +17,9 @@
   },
   "scripts": {
     "test": "testem ci",
-    "build": "browserify index.js --standalone routine | derequire > dist/routine.js"
+    "build-dev": "browserify index.js --standalone routine | derequire > dist/routine.js",
+    "build-min": "browserify index.js --standalone routine | derequire | uglifyjs -c > dist/routine.min.js",
+    "build": "npm run build-dev && npm run build-min"
   },
   "author": "Kim Joar Bekkelund <kjbekkelund@gmail.com>",
   "license": "MIT"
