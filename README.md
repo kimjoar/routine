@@ -94,3 +94,4 @@ Installation
 npm install routine
 ```
 
+Or download from `dist` folder.
