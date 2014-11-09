@@ -6,8 +6,9 @@ A simple routing engine based on Backbone's routing engine.
 This library does not listen for hash changes or history
 updates. Instead, this library expects to be injected an
 event emitter that emits a `change` event that includes
-the new route. One such library is [chronicler](), which
-listens for `onhashchange`.
+the new route. One such library is
+[chronicler](https://github.com/kjbekkelund/chronicler),
+which listens for `onhashchange`.
 
 Example
 -------
