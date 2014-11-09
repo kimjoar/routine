@@ -1,8 +1,7 @@
 Routine
 =======
 
-A simple routing engine based on Backbone's routing
-engine.
+A simple routing engine based on Backbone's routing engine.
 
 ```javascript
 var routes = routine();
@@ -18,27 +17,21 @@ routes.on("search/:query", function(query) {
 });
 ```
 
-This library does not listen for hash changes or
-history updates.
-
-You can either invoke the engine on your own, e.g. on
-hash change:
+This library does not listen for hash changes or history updates. You can
+either invoke the engine on your own, e.g. on hash change:
 
 ```javascript
 window.addEventListener("hashchange", function() {
     var match = window.location.href.match(/#(.*)$/);
     var hash = match ? match[1] : '';
 
+    // invoke the matching route
     routes.goTo(hash);
 });
 ```
 
-This will invoke the matching route.
-
-Or, a better solution is to inject an event emitter
-that abstracts listening to url changes. One such
-library is
-[chronicler](https://github.com/kjbekkelund/chronicler),
+Or, better, inject an event emitter that abstracts listening to url changes.
+One such library is [chronicler](https://github.com/kjbekkelund/chronicler),
 that emits `change` events when the url changes.
 
 ```javascript
