@@ -32,7 +32,7 @@ window.addEventListener("hashchange", function() {
 
 Or, better, inject an event emitter that abstracts listening to url changes.
 One such library is [chronicler](https://github.com/kjbekkelund/chronicler),
-that emits `change` events when the url changes.
+which emits `change` events when the url changes.
 
 ```javascript
 var history = chronicler();
