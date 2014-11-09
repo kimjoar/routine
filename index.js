@@ -9,19 +9,21 @@ module.exports = function(history) {
     history && start();
 
     return {
-        on: function(route, cb) {
-            if (!isRegExp(route)) {
-                route = routeToRegExp(route);
-            }
-            handlers.push({
-                route: route,
-                callback: callWithParams(route, cb)
-            });
-        },
+        on: on,
         goTo: goTo,
         start: start,
         stop: stop
     };
+
+    function on(route, cb) {
+        if (!isRegExp(route)) {
+            route = routeToRegExp(route);
+        }
+        handlers.push({
+            route: route,
+            callback: callWithParams(route, cb)
+        });
+    }
 
     function goTo(url) {
         handlers.some(function(handler) {
