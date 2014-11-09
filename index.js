@@ -6,6 +6,23 @@ var escapeRegExp  = /[\-{}\[\]+?.,\\\^$|#\s]/g;
 module.exports = function(history) {
     var handlers = [];
 
+    history && start();
+
+    return {
+        on: function(route, cb) {
+            if (!isRegExp(route)) {
+                route = routeToRegExp(route);
+            }
+            handlers.push({
+                route: route,
+                callback: callWithParams(route, cb)
+            });
+        },
+        goTo: goTo,
+        start: start,
+        stop: stop
+    };
+
     function goTo(url) {
         handlers.some(function(handler) {
             if (handler.route.test(url)) {
@@ -21,22 +38,6 @@ module.exports = function(history) {
     function stop() {
         history.removeListener('change', goTo);
     }
-
-    start();
-
-    return {
-        on: function(route, cb) {
-            if (!isRegExp(route)) {
-                route = routeToRegExp(route);
-            }
-            handlers.push({
-                route: route,
-                callback: callWithParams(route, cb)
-            });
-        },
-        start: start,
-        stop: stop
-    };
 };
 
 function isRegExp(obj) {

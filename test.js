@@ -208,8 +208,8 @@ test('route anything', function(t) {
     history.emit("change", "doesnt-match-a-route");
 });
 
-test('can stop routing', function(t) {
-    t.plan(1);
+test('can stop and restart routing', function(t) {
+    t.plan(2);
 
     var history = new EventEmitter();
     var routes = routine(history);
@@ -223,6 +223,22 @@ test('can stop routing', function(t) {
     routes.stop();
 
     history.emit("change", "stop");
+
+    routes.start();
+
+    history.emit("change", "stop");
+});
+
+test('works without eventemitter', function(t) {
+    t.plan(1);
+
+    var routes = routine();
+
+    routes.on("no-emitter/:test", function(arg) {
+        t.equal(arg, "kim");
+    });
+
+    routes.goTo("no-emitter/kim");
 });
 
 function once(fn) {
