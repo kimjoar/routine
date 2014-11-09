@@ -1,14 +1,49 @@
 Routine
 =======
 
-A simple routing engine based on Backbone's routing engine.
+A simple routing engine based on Backbone's routing
+engine.
 
-This library does not listen for hash changes or history
-updates. Instead, this library expects to be injected an
-event emitter that emits a `change` event that includes
-the new route. One such library is
+```javascript
+var routes = routine();
+
+routes.on("", function() {
+    console.log("root");
+});
+
+// A :param matches a single URL component between slashes
+routes.on("search/:query", function(query) {
+    // e.g. search/test
+    console.log("searching", query);
+});
+```
+
+This library does not listen for hash changes or
+history updates.
+
+You can either invoke the engine on your own, e.g. on
+hash change:
+
+```javascript
+window.addEventListener("hashchange", function() {
+    var match = window.location.href.match(/#(.*)$/);
+    var hash = match ? match[1] : '';
+
+    routes.goTo(hash);
+});
+```
+
+This will invoke the matching route.
+
+A better solution is to inject an event emitter that
+abstracts listening to url changes. One such library is
 [chronicler](https://github.com/kjbekkelund/chronicler),
-which listens for `onhashchange`.
+that emits `change` events when the url changes.
+
+```javascript
+var history = chronicler();
+var routes = routine(history);
+```
 
 Example
 -------
@@ -47,6 +82,15 @@ routes.on(":repo/compare/*from...*to", function(repo, from, to) {
 routes.on(/regexp$/, function() {
     // e.g. ends/with/regexp
 });
+
+// At some point if we want to stop matching routes:
+routes.stop();
+
+// We can also start listening again:
+routes.start();
+
+// Invoke a matching route
+routes.goTo("some/route");
 ```
 
 Installation
