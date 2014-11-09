@@ -1,7 +1,7 @@
 {
   "name": "routine",
   "version": "0.1.0",
-  "description": "A simple router",
+  "description": "A simple routing engine",
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
@@ -9,6 +9,10 @@
     "derequire": "^1.2.0",
     "phantomjs": "^1.9.10",
     "tape": "^3.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kjbekkelund/routine.git"
   },
   "scripts": {
     "test": "testem ci",
