@@ -4,7 +4,6 @@ var EventEmitter = require('events').EventEmitter;
 
 var history = new EventEmitter();
 var routes = routine(history);
-routes.start();
 
 test('empty route', function(t) {
     t.plan(1);
@@ -201,7 +200,6 @@ test('route anything', function(t) {
 
     var history = new EventEmitter();
     var routes = routine(history);
-    routes.start();
 
     routes.on("*anything", function(arg) {
         t.equal(arg, "doesnt-match-a-route");
@@ -215,7 +213,6 @@ test('can stop routing', function(t) {
 
     var history = new EventEmitter();
     var routes = routine(history);
-    routes.start();
 
     routes.on("stop", function() {
         t.pass();

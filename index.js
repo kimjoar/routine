@@ -15,6 +15,15 @@ module.exports = function(history) {
         });
     }
 
+    function start() {
+        history.on('change', goTo);
+    }
+    function stop() {
+        history.removeListener('change', goTo);
+    }
+
+    start();
+
     return {
         on: function(route, cb) {
             if (!isRegExp(route)) {
@@ -25,12 +34,8 @@ module.exports = function(history) {
                 callback: callWithParams(route, cb)
             });
         },
-        start: function() {
-            history.on('change', goTo);
-        },
-        stop: function() {
-            history.removeListener('change', goTo);
-        }
+        start: start,
+        stop: stop
     };
 };
 
