@@ -35,8 +35,9 @@ window.addEventListener("hashchange", function() {
 
 This will invoke the matching route.
 
-A better solution is to inject an event emitter that
-abstracts listening to url changes. One such library is
+Or, a better solution is to inject an event emitter
+that abstracts listening to url changes. One such
+library is
 [chronicler](https://github.com/kjbekkelund/chronicler),
 that emits `change` events when the url changes.
 
