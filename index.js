@@ -26,9 +26,11 @@ module.exports = function(history) {
     }
 
     function goTo(url) {
+        var args = Array.prototype.slice.call(arguments);
+
         handlers.some(function(handler) {
             if (handler.route.test(url)) {
-                handler.callback(url);
+                handler.callback.apply(null, args);
                 return true;
             }
         });
@@ -37,6 +39,7 @@ module.exports = function(history) {
     function start() {
         history.on('change', goTo);
     }
+
     function stop() {
         history.removeListener('change', goTo);
     }
